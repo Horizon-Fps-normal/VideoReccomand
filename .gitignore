@@ -41,5 +41,12 @@ next-env.d.ts
 /outputs/
 /work/
 
+# desktop packaging output
+/release/
+/release-*/
+/installer/
+/manual-unpacked-*/
+/packaging-stage-*/
+
 # local launch and development logs
 *.log

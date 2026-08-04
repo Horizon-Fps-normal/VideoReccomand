@@ -2,6 +2,9 @@
   "name": "series-scout",
   "version": "0.1.0",
   "private": true,
+  "description": "本地优先的美剧片单与评分软件",
+  "author": "Horizon-Fps-normal",
+  "main": "desktop/main.mjs",
   "engines": {
     "node": ">=22.13.0"
   },
@@ -9,9 +12,45 @@
     "dev": "vinext dev --hostname 0.0.0.0",
     "build": "vinext build",
     "start": "vinext start",
+    "desktop:dev": "npm run build && electron .",
+    "package:win": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\package-windows.ps1",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern release* --ignore-pattern installer --ignore-pattern manual-unpacked-* --ignore-pattern packaging-stage-*",
     "db:generate": "drizzle-kit generate"
+  },
+  "build": {
+    "appId": "com.horizon.series-scout",
+    "productName": "Series Scout",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop/**/*",
+      "dist/client/**/*",
+      "dist/server/**/*",
+      "dist/.openai/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Series-Scout-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Series Scout"
+    }
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
@@ -28,6 +67,8 @@
     "@vitejs/plugin-react": "6.0.2",
     "@vitejs/plugin-rsc": "0.5.26",
     "drizzle-kit": "0.31.10",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.15.3",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.6",
     "react-server-dom-webpack": "19.2.6",

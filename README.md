@@ -34,6 +34,16 @@ npm test
 npm run lint
 ```
 
+## Windows 安装包
+
+开发者可以在 Windows 上运行下面的命令生成安装程序：
+
+```bash
+npm run package:win
+```
+
+安装包会生成在 `release/`，文件名类似 `Series-Scout-Setup-0.1.0.exe`。普通用户只需要下载并运行这个 `.exe`，不需要单独安装 Node.js。
+
 ## 数据与隐私
 
 片单、评分和搜索设置默认保存在当前浏览器的 `localStorage` 中，不会自动上传到本项目。TMDB API Key 只保存在当前设备的浏览器本地，并不会写入 Git 仓库；导出的 JSON 备份也应按个人数据妥善保存。
@@ -51,4 +61,4 @@ start-series-scout.ps1    Windows 一键启动脚本
 
 ## 技术栈
 
-Next.js、React、TypeScript、Vinext、Vite 和 Tailwind CSS。项目保留了 Cloudflare Sites/Vinext 的部署配置，也可以作为普通 Node.js 前端项目运行。
+Next.js、React、TypeScript、Vinext、Vite、Tailwind CSS、Electron 和 electron-builder。项目保留了 Cloudflare Sites/Vinext 的部署配置，也可以作为普通 Node.js 前端项目运行。
