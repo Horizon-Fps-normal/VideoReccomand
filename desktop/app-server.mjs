@@ -47,6 +47,16 @@ async function serveStatic(request) {
   }
 }
 
+async function sendResponse(response, incoming, outgoing) {
+  outgoing.statusCode = response.status;
+  response.headers.forEach((value, key) => outgoing.setHeader(key, value));
+  if (incoming.method === "HEAD") {
+    outgoing.end();
+    return;
+  }
+  outgoing.end(Buffer.from(await response.arrayBuffer()));
+}
+
 function requestBody(request) {
   return ["GET", "HEAD"].includes(request.method) ? undefined : request;
 }
@@ -63,20 +73,20 @@ export async function startAppServer() {
         body: requestBody(incoming),
         duplex: "half",
       });
+
+      const staticResponse = await serveStatic(request);
+      if (staticResponse.status !== 404) {
+        await sendResponse(staticResponse, incoming, outgoing);
+        return;
+      }
+
       const response = await app.fetch(request, {
         ASSETS: { fetch: serveStatic },
       }, {
         waitUntil() {},
         passThroughOnException() {},
       });
-
-      outgoing.statusCode = response.status;
-      response.headers.forEach((value, key) => outgoing.setHeader(key, value));
-      if (incoming.method === "HEAD") {
-        outgoing.end();
-        return;
-      }
-      outgoing.end(Buffer.from(await response.arrayBuffer()));
+      await sendResponse(response, incoming, outgoing);
     } catch (error) {
       console.error("Series Scout local server error", error);
       outgoing.statusCode = 500;

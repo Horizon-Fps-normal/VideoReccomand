@@ -42,7 +42,7 @@ npm run lint
 npm run package:win
 ```
 
-安装包会生成在 `release/`，文件名类似 `Series-Scout-Setup-0.1.0.exe`。普通用户只需要下载并运行这个 `.exe`，不需要单独安装 Node.js。
+安装包会生成在 `release/`，文件名类似 `Series-Scout-Setup-0.1.1.exe`。普通用户只需要下载并运行这个 `.exe`，不需要单独安装 Node.js。
 
 ## 数据与隐私
 
